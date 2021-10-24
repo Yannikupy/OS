@@ -2,12 +2,9 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <stdbool.h>
-#include <math.h>
-//  #include <unistd.h>
-//  #include <ctype.h>
 
 struct Arguments {
-    int id; //  ID of thread
+    int id; //  ID потока
     int num_of_throws;
     int sum_of_points_1;
     int sum_of_points_2;
@@ -89,7 +86,7 @@ int main (int argc, char *argv[]) {
                 fprintf(stderr, "in main: Can't allocate memory for threads\n");
                 exit(EXIT_FAILURE);
             }
-            //  заполняем значения аргументов
+            //  вводим значения для аргументов
             Args args[num_of_threads];
             for (int index = 0; index < num_of_threads; index++) {
                 args[index].id = index;
@@ -107,19 +104,17 @@ int main (int argc, char *argv[]) {
                 }
             }
 
-            //  ждем завершения
+            //  ждем завершения работы потоков
             for (int index = 0; index < num_of_threads; index++) {
                 status = pthread_join(threads[index], (void **) &status_addr);
                 if (status != 0) {
                     fprintf(stderr, "main error: Can't join thread, status = %d\n", status);
                     exit(EXIT_FAILURE);
                 }
-                //printf("Joined with address: %d\n", status_addr);
             }
 
-            //  расчет количества побед у каждого игрока
+            //  рассчитываем количество побед у каждого игрока
             for (int index = 0; index < num_of_threads; index++) {
-//				wins_1 = (args[index].win_1 == true)? (wins_1 + 1) : (wins_2 + 1);
                 if (args[index].win_1) {
                     ++wins_1;
                 }
@@ -137,7 +132,7 @@ int main (int argc, char *argv[]) {
                 fprintf(stderr, "in main: Can't allocate memory for threads\n");
                 exit(EXIT_FAILURE);
             }
-            //  заполняем значения аргументов
+            //  вводим значения аргументов
             Args args[num_of_experiments];
             for (int index = 0; index < num_of_experiments; index++) {
                 args[index].id = index;
@@ -155,19 +150,17 @@ int main (int argc, char *argv[]) {
                 }
             }
 
-            //  ждем завершения
+            //  ждем завершения работы потоков
             for (int index = 0; index < num_of_experiments; index++) {
                 status = pthread_join(threads[index], (void **) &status_addr);
                 if (status != 0) {
                     fprintf(stderr, "main error: Can't join thread, status = %d\n", status);
                     exit(EXIT_FAILURE);
                 }
-                //printf("Joined with address: %d\n", status_addr);
             }
 
-            //  расчет количества побед у каждого игрока
+            //  рассчитываем количество побед у каждого игрока
             for (int index = 0; index < num_of_experiments; index++) {
-                //wins_1 = (args[index].win_1 == true)? (wins_1 + 1) : (wins_2 + 1);
                 if (args[index].win_1) {
                     ++wins_1;
                 }
@@ -181,9 +174,8 @@ int main (int argc, char *argv[]) {
         }
     }
 
-    //  подсчет шансов
+    //  подсчитываем шансы на победу каждого игрока
     result_for_the_1st = (float)wins_1 / (float)num_of_plays;
-//	result_for_the_2nd = (float)wins_2 / (float)num_of_plays;
     result_for_the_2nd = 1.0 - result_for_the_1st;
     printf("Chances of the 1st player: %.2f\n", result_for_the_1st);
     printf("Chances of the 2nd player: %.2f\n", result_for_the_2nd);
