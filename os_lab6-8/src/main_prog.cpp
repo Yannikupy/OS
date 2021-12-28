@@ -8,6 +8,7 @@ int main()
 {
     zmq::context_t context(1);
     zmq::socket_t main_socket(context, ZMQ_REP);
+    main_socket.setsockopt(ZMQ_RCVTIMEO, 1000);
     string adr = "tcp://127.0.0.1:300";
     string command;
     int child_id = 0;
@@ -90,9 +91,6 @@ int main()
                 string message_string = command;
                 zmq::message_t message(message_string.size());
                 memcpy(message.data(), message_string.c_str(), message_string.size());
-                // receive answer from child
-                //for (int j = 0; j < beat_amount; j++)
-                //{
                 main_socket.send(message);
                 main_socket.recv(&message);
                 string recieved_message(static_cast<char *>(message.data()), message.size());
