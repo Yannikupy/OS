@@ -1,14 +1,10 @@
+all: server client
 
-all: A B C
+server: server.cpp
+	g++ server.cpp -lzmq -pthread -o server -w
 
-A: A.cpp
-	g++ A.cpp -lzmq -o A
-
-B: B.cpp
-	g++ B.cpp -lzmq -o B
-
-C: C.cpp
-	g++ C.cpp -lzmq -o C
+client: client.cpp
+	g++ client.cpp -lzmq -pthread -o client -w
 
 clean:
-	rm A B
+	rm server client
